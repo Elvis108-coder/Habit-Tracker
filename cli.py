@@ -50,22 +50,23 @@ def view_check_in_history(user):
         for ci in check_ins:
             print(f"📅 {ci.check_in_date}")
     else:
-        print("Habit not found.")
-        def show_stats(user):
-    for habit in session.query(Habit).filter_by(user_id=user.id).all():
-        check_ins = session.query(CheckIn).filter_by(habit_id=habit.id).order_by(CheckIn.check_in_date).all()
-        total = len(check_ins)
-        streak = 0
-        today = datetime.date.today()
-        for i in range(total - 1, -1, -1):
-            if (today - check_ins[i].check_in_date).days in [0, 1]:
-                streak += 1
-                today = check_ins[i].check_in_date
-            else:
-                break
-        print(f"\n📊 {habit.name}")
-        print(f" - Total Check-ins: {total}")
-        print(f" - Streak: {streak}")
+            print("Habit not found.")
+    
+    def show_stats(user):
+        for habit in session.query(Habit).filter_by(user_id=user.id).all():
+            check_ins = session.query(CheckIn).filter_by(habit_id=habit.id).order_by(CheckIn.check_in_date).all()
+            total = len(check_ins)
+            streak = 0
+            today = datetime.date.today()
+            for i in range(total - 1, -1, -1):
+                if (today - check_ins[i].check_in_date).days in [0, 1]:
+                    streak += 1
+                    today = check_ins[i].check_in_date
+                else:
+                    break
+            print(f"\n📊 {habit.name}")
+            print(f" - Total Check-ins: {total}")
+            print(f" - Streak: {streak}")
 
 def show_graph(user):
     labels, data = [], []
