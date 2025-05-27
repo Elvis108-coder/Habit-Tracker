@@ -27,7 +27,7 @@ def delete_habit(user):
         print(f"❌ Deleted habit '{habit.name}'.")
     else:
         print("Habit not found.")
-        You said:
+       
 def log_check_in(user):
     view_habits(user)
     habit_id = input("Enter habit ID to check-in: ")
