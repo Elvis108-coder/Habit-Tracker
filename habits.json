@@ -1,0 +1,19 @@
+{
+  "Read": {
+    "name": "Read",
+    "frequency": "daily",
+    "created": "2025-05-27T23:10:46.274678",
+    "completions": [
+      "2025-05-26T23:10:46.275494",
+      "2025-05-27T23:10:46.275510"
+    ],
+    "reminder_time": "20:00"
+  },
+  "Exercise": {
+    "name": "Exercise",
+    "frequency": "weekly",
+    "created": "2025-05-27T23:10:46.274917",
+    "completions": [],
+    "reminder_time": null
+  }
+}
