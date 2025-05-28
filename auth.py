@@ -2,6 +2,7 @@ from models import User
 from database import session
 from getpass import getpass
 
+#Registration and login functionality 
 def register():
     username = input("Enter new username: ")
     if session.query(User).filter_by(username=username).first():
