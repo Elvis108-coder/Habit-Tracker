@@ -1,26 +1,26 @@
 from models import User
-from database import session
+from database import get_session
 from getpass import getpass
 
-#Registration and login functionality 
-def register():
-    username = input("Enter new username: ")
-    if session.query(User).filter_by(username=username).first():
-        print("Username already exists.")
+def register(username, password):
+    session = get_session()
+    existing_user = session.query(User).filter_by(username=username).first()
+    if existing_user:
+        print("Username already taken. Try another one.")
         return None
-    password = getpass("Enter password: ")
-    user = User(username=username, password=password)
-    session.add(user)
-    session.commit()
-    print("✅ Registered successfully!")
-    return user
 
-def login():
-    username = input("Enter username: ")
-    password = getpass("Enter password: ")
-    user = session.query(User).filter_by(username=username, password=password).first()
-    if user:
+    new_user = User(username=username, password=password)
+    session.add(new_user)
+    session.commit()
+    print("✅ Registration successful! You can now login.")
+    return new_user
+
+def login(username, password):
+    session = get_session()
+    user = session.query(User).filter_by(username=username).first()
+    if user and user.password == password:
         print("✅ Login successful!")
         return user
-    print("❌ Invalid credentials.")
-    return None
+    else:
+        print("❌ Invalid credentials.")
+        return None
