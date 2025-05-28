@@ -1,4 +1,15 @@
+from database import inited
 from auth import register, login
+from cli import use_env
+
+def run():
+    inited()  # Ensure database tables are created
+
+    while True:
+        print("\n🌱 Welcome to Habit Tracker CLI 🌱")
+        print("[1] Register")
+        print("[2] Login")
+        print("[3] Exit")
 from cli import add_habit, view_habits, delete_habit
 from database import init_db
 
@@ -19,41 +30,31 @@ def user_menu(user):
         choice = input("Choose an option: ")
 
         if choice == "1":
-            name = input("Enter habit name: ")
-            add_habit(user, name)
-        elif choice == "2":
-            view_habits(user)
-        elif choice == "3":
-            habit_id = input("Enter habit ID to delete: ")
-            if habit_id.isdigit():
-                delete_habit(user, int(habit_id))
-            else:
-                print("Invalid habit ID.")
-        elif choice == "4":
-            print("Logging out...")
-            break
-        else:
-            print("Invalid choice. Try again.")
-def run():
-    init_db()  # Ensure tables are created
-    while True:
-        choice = main_menu()
-        if choice == "1":
             username = input("Choose a username: ")
             password = input("Choose a password: ")
-            register(username, password)
+            user = register(username, password)   # capture returned user
+            if user:
+                print("✅ Registration successful!")
+                use_env(user)                     # immediately log in after registration
+            else:
+                print("❌ Registration failed. Username may already exist.")
+
         elif choice == "2":
             username = input("Username: ")
             password = input("Password: ")
-            user = login(username, password)
+            user = login(username, password)       # capture returned user
             if user:
-                user_menu(user)
+                print("✅ Login successful!")
+                use_env(user)
+            else:
+                print("❌ Invalid username or password.")
+
         elif choice == "3":
             print("Goodbye!")
             break
+
         else:
-            print("Invalid choice. Try again.")
+            print("Invalid choice.")
 
 if __name__ == "__main__":
     run()
-
