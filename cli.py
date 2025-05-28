@@ -1,38 +1,53 @@
 from models import Habit, CheckIn
 from database import get_session
+session = get_session()
 import datetime
 import os
 
 # Habit management features for logged in users
-def add_habit(user):
-    name = input("Enter habit name: ")
-    session = get_session()
-    habit = Habit(name=name, user_id=user.id)
-    session.add(habit)
+def add_habit(session, user, name):
+    from models import Habit  # ensure this import is present
+
+    new_habit = Habit(name=name, user_id=user.id)
+    session.add(new_habit)
     session.commit()
     print(f"✅ Habit '{name}' added.")
     session.close()
 
-def view_habits(user):
-    session = get_session()
+
+def view_habits(session, user):
     habits = session.query(Habit).filter_by(user_id=user.id).all()
     if not habits:
-        print("No habits.")
+        print("You have no habits.")
+        return
     for habit in habits:
         print(f"[{habit.id}] {habit.name}")
+
     session.close()
 
-def delete_habit(user):
-    view_habits(user)  # Already opens/closes its own session
-    habit_id = input("Enter habit ID to delete: ")
-    session = get_session()
-    habit = session.query(Habit).filter_by(id=int(habit_id), user_id=user.id).first()
-    if habit:
-        session.delete(habit)
+def delete_habit(session, user):
+    habits = session.query(Habit).filter_by(user_id=user.id).all()
+    if not habits:
+        print("You have no habits to delete.")
+        return
+
+    for habit in habits:
+        print(f"[{habit.id}] {habit.name}")
+    
+    try:
+        habit_id = int(input("Enter habit ID to delete: "))
+    except ValueError:
+        print("❌ Invalid ID.")
+        return
+
+    habit_to_delete = session.query(Habit).filter_by(id=habit_id, user_id=user.id).first()
+    if habit_to_delete:
+        session.delete(habit_to_delete)
         session.commit()
-        print(f"❌ Deleted habit '{habit.name}'.")
+        print(f"🗑️  Habit '{habit_to_delete.name}' deleted.")
     else:
-        print("Habit not found.")
+        print("❌ Habit not found.")
+
     session.close()
 
 def log_check_in(user):
