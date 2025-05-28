@@ -6,6 +6,7 @@ from database import init_db, SessionLocal  # Assuming SessionLocal is your sess
 
 logging.getLogger('sqlalchemy.engine').setLevel(logging.WARNING)
 
+
 def main_menu():
     print("\n🌱 Welcome to Habit Tracker CLI 🌱")
     print("[1] Register")
