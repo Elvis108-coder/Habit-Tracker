@@ -10,6 +10,23 @@ def run():
         print("[1] Register")
         print("[2] Login")
         print("[3] Exit")
+from cli import add_habit, view_habits, delete_habit
+from database import init_db
+
+
+def main_menu():
+    print("\n🌱 Welcome to Habit Tracker CLI 🌱")
+    print("[1] Register")
+    print("[2] Login")
+    print("[3] Exit")
+    return input("Choose an option: ")
+def user_menu(user):
+    while True:
+        print(f"\n👤 Logged in as {user.username}")
+        print("[1] Add a habit")
+        print("[2] View my habits")
+        print("[3] Delete a habit")
+        print("[4] Logout")
         choice = input("Choose an option: ")
 
         if choice == "1":
