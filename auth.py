@@ -1,26 +1,27 @@
 import bcrypt
 from models import User
-from database import session
+from database import get_session
+from getpass import getpass
 
 def register(username, password):
+    session = get_session()
     existing_user = session.query(User).filter_by(username=username).first()
     if existing_user:
-        print("❌ Username already exists.")
-        return
+        print("Username already taken. Try another one.")
+        return None
 
-    # Hash the password before storing
-    hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-
-    user = User(username=username, password=hashed_pw.decode('utf-8'))  # store as string
-    session.add(user)
+    new_user = User(username=username, password=password)
+    session.add(new_user)
     session.commit()
-    print("✅ Registration successful!")
+    print("✅ Registration successful! You can now login.")
+    return new_user
 
 def login(username, password):
+    session = get_session()
     user = session.query(User).filter_by(username=username).first()
-    if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
+    if user and user.password == password:
         print("✅ Login successful!")
         return user
     else:
-        print("❌ Invalid username or password.")
+        print("❌ Invalid credentials.")
         return None
