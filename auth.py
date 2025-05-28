@@ -1,25 +1,21 @@
-from models import User
-from database import session
-from getpass import getpass
+# auth.py
 
-def register():
-    username = input("Enter new username: ")
-    if session.query(User).filter_by(username=username).first():
-        print("Username already exists.")
-        return None
-    password = getpass("Enter password: ")
-    user = User(username=username, password=password)
-    session.add(user)
-    session.commit()
-    print("✅ Registered successfully!")
-    return user
+users = {}  # This dictionary will store users as {username: password}
 
-def login():
-    username = input("Enter username: ")
-    password = getpass("Enter password: ")
-    user = session.query(User).filter_by(username=username, password=password).first()
-    if user:
+
+def register(username, password):
+    if username in users:
+        print("⚠️  Username already exists. Please choose another.")
+        return False
+    users[username] = password
+    print("✅ Registration successful!")
+    return True
+
+
+def login(username, password):
+    if username in users and users[username] == password:
         print("✅ Login successful!")
-        return user
-    print("❌ Invalid credentials.")
-    return None
+        return username
+    else:
+        print("❌ Invalid username or password.")
+        return None

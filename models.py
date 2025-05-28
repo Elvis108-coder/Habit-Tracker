@@ -1,26 +1,25 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Date
+# models.py
+
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship, declarative_base
+from datetime import datetime
 
 Base = declarative_base()
 
-class User(Base):
-    __tablename__ = "users"
-    id = Column(Integer, primary_key=True)
-    username = Column(String, unique=True)
-    password = Column(String)
-    habits = relationship("Habit", back_populates="user")
-
 class Habit(Base):
-    __tablename__ = "habits"
+    __tablename__ = 'habits'
+
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    user = relationship("User", back_populates="habits")
+    name = Column(String, nullable=False)
+    frequency = Column(String, nullable=False)  # e.g., daily, weekly
+
     check_ins = relationship("CheckIn", back_populates="habit")
 
 class CheckIn(Base):
-    __tablename__ = "check_ins"
+    __tablename__ = 'checkins'
+
     id = Column(Integer, primary_key=True)
-    habit_id = Column(Integer, ForeignKey("habits.id"))
-    check_in_date = Column(Date)
+    date = Column(DateTime, default=datetime.utcnow)
+    habit_id = Column(Integer, ForeignKey('habits.id'))
+
     habit = relationship("Habit", back_populates="check_ins")
