@@ -1,0 +1,62 @@
+{
+  "Read": {
+    "name": "Read",
+    "frequency": "monthly",
+    "created": "2025-05-28T22:49:56.368306",
+    "completions": [
+      "2025-05-28T23:58:34.253140"
+    ],
+    "reminder_time": "10:50am"
+  },
+  "Exercise": {
+    "name": "Exercise",
+    "frequency": "weekly",
+    "created": "2025-05-27T23:51:14.544732",
+    "completions": [
+      "2025-05-28T00:54:45.873538",
+      "2025-05-28T00:58:55.221483"
+    ],
+    "reminder_time": null
+  },
+  "hike": {
+    "name": "hike",
+    "frequency": "weekly",
+    "created": "2025-05-28T00:53:58.522238",
+    "completions": [],
+    "reminder_time": null
+  },
+  "fly": {
+    "name": "fly",
+    "frequency": "daily",
+    "created": "2025-05-28T00:57:52.445719",
+    "completions": [
+      "2025-05-28T23:35:30.820259"
+    ],
+    "reminder_time": "3hours"
+  },
+  "play": {
+    "name": "play",
+    "frequency": "daily",
+    "created": "2025-05-28T01:29:28.670180",
+    "completions": [
+      "2025-05-28T01:31:39.407155"
+    ],
+    "reminder_time": "9"
+  },
+  "Dance": {
+    "name": "Dance",
+    "frequency": "rarely",
+    "created": "2025-05-28T23:32:53.450308",
+    "completions": [],
+    "reminder_time": "10:50"
+  },
+  "watch": {
+    "name": "watch",
+    "frequency": "daily",
+    "created": "2025-05-29T00:01:38.101803",
+    "completions": [
+      "2025-05-29T00:02:23.810051"
+    ],
+    "reminder_time": null
+  }
+}

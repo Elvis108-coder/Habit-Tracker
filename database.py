@@ -1,16 +1,18 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import sessionmaker
+from models import Base  # Import Base from models.py
 
-# Create engine (connect to SQLite database)
-engine = create_engine('sqlite:///habits.db', echo=False)
+# Set up engine
+engine = create_engine("sqlite:///habits.db", echo=True)
 
-# Create session
-Session = sessionmaker(bind=engine)
-session = Session()
+# Corrected name to match what app.py expects
+SessionLocal = sessionmaker(bind=engine)
 
-# Base class for models
-Base = declarative_base()
+# Function to get a new session
+def get_session():
+    return SessionLocal()
 
-def inited():
-    from models import Habit, CheckIn  # Avoid circular imports
+# Function to initialize the database
+def init_db():
+    import models  # Ensure all models are registered
     Base.metadata.create_all(engine)
