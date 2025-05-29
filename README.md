@@ -34,3 +34,51 @@ class Habits(Base):
     description = Column(String)
     user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship('User', back_populates= 'habits')
+
+    PART 2
+
+Added Utility Functions to help with deleting of data
+
+def get_user_by_email(email):
+    return session.query(User).filter_by(email = email).first()
+
+def confirm_action(prompt: str) -> bool:
+    return input(f"{prompt} (yes/no): ").strip().lower() == 'yes'
+
+Created A function for adding a user
+
+def add_user():
+    name, email = input("Enter user name: "), input("Enter email: ")
+    if get_user_by_email(email):
+        print(f"Email already exists: {email}")
+        return
+    try:
+        session.add(User(names=name, email=email))#Add user to the database
+        session.commit()
+        print(f"User: {name} added!")
+    except IntegrityError:
+        session.rollback()
+        print(f'error')
+
+Created A function for adding habit to the database
+
+def add_habit():
+    email = input("Enter email: ")
+    user = get_user_by_email(email)
+
+    if not user:
+        print(f'No user found by that email!')
+        return
+    title, description = input("Enter the title: "), input("Enter the description: ")
+    session.add(Habits(title=title, description=description, user=user))#Add habit to the database
+    session.commit()
+    print(f"Added to the database: {title}: {description}")
+
+Added two menus To add User and Habit
+def main()-> None:
+    actions= {
+        "1":add_user,
+        "2":add_habit
+        
+    }
+
