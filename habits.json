@@ -1,12 +1,13 @@
 {
   "Read": {
     "name": "Read",
-    "frequency": "monthly",
-    "created": "2025-05-28T22:49:56.368306",
+    "frequency": "(daily",
+    "created": "2025-05-29T19:15:04.029518",
     "completions": [
-      "2025-05-28T23:58:34.253140"
+      "2025-05-29T19:49:13.409526",
+      "2025-05-29T19:55:56.390458"
     ],
-    "reminder_time": "10:50am"
+    "reminder_time": "10:50"
   },
   "Exercise": {
     "name": "Exercise",
@@ -22,7 +23,9 @@
     "name": "hike",
     "frequency": "weekly",
     "created": "2025-05-28T00:53:58.522238",
-    "completions": [],
+    "completions": [
+      "2025-05-29T01:39:58.963072"
+    ],
     "reminder_time": null
   },
   "fly": {
@@ -58,5 +61,19 @@
       "2025-05-29T00:02:23.810051"
     ],
     "reminder_time": null
+  },
+  "Chat": {
+    "name": "Chat",
+    "frequency": "daily",
+    "created": "2025-05-29T01:38:24.682064",
+    "completions": [],
+    "reminder_time": null
+  },
+  "code": {
+    "name": "code",
+    "frequency": "weekly",
+    "created": "2025-05-29T19:55:45.735905",
+    "completions": [],
+    "reminder_time": "10:12"
   }
 }
