@@ -126,3 +126,73 @@ def main()-> None:
         "4":query_habits
         
     }
+
+                                            PART 4
+
+Added Three functions, update_user, delete_user and delete_habit
+
+#Update User
+def update_user():
+    email = input("Enter email: ")
+    user = get_user_by_email(email)
+    if not user:
+        print("User does not exist, wrong email!")
+        return
+
+    new_name = input(f"Enter new name (current: {user.names}): ").strip()
+    new_email = input(f"Enter new email (current: {user.email}): ").strip()
+
+    if new_email != user.email and get_user_by_email(new_email):
+        print("That email is already in use.")
+        return
+
+    user.names = new_name or user.names
+    user.email = new_email or user.email
+
+    try:
+        session.commit()
+        print("User updated successfully.")
+    except IntegrityError:
+        session.rollback()
+        print("Error updating user.")
+
+
+#Delete User
+def delete_user():
+    email = input("Enter email: ")
+    user = get_user_by_email(email)
+    if not user:
+        print("User not found.")
+        return
+
+    if confirm_action(f"Are you sure you want to delete {user.names}? This will delete all their tasks too."):
+        session.delete(user)
+        session.commit()
+        print("User and their habits deleted.")
+
+#Delete Habit
+def delete_habit():
+    habit_id = input("Enter the task ID to delete: ").strip()
+    habit = session.query(Habits).filter_by(id=habit_id).first()
+    if not habit:
+        print("No task found with that ID.")
+        return
+
+    if confirm_action(f"Are you sure you want to delete the task: {habit.title}?"):
+        session.delete(habit)
+        session.commit()
+        print("Habit deleted.")
+
+Added update_user, delet_user and delete_habit in dictionary.
+
+def main()-> None:
+    actions= {
+        "1":add_user,
+        "2":add_habit,
+        "3":query_users,
+        "4":query_habits,
+        "5":update_user,
+        "6":delete_user,
+        "7":delete_habit
+        
+    }
