@@ -4,7 +4,8 @@
     "frequency": "monthly",
     "created": "2025-05-28T22:49:56.368306",
     "completions": [
-      "2025-05-28T23:58:34.253140"
+      "2025-05-28T23:58:34.253140",
+      "2025-05-30T23:15:03.246871"
     ],
     "reminder_time": "10:50am"
   },
@@ -58,5 +59,12 @@
       "2025-05-29T00:02:23.810051"
     ],
     "reminder_time": null
+  },
+  "Code": {
+    "name": "Code",
+    "frequency": "everyday",
+    "created": "2025-05-30T23:15:50.189474",
+    "completions": [],
+    "reminder_time": "10:20"
   }
 }

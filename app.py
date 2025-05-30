@@ -1,11 +1,12 @@
-from database import inited
+from database import init_db
+
 import logging
 from sqlalchemy.orm import Session
 from auth import register, login
 from cli import use_env
 
 def run():
-    inited()  # Ensure database tables are created
+    init_db()  # Ensure database tables are created
 
     while True:
         print("\n🌱 Welcome to Habit Tracker CLI 🌱")
