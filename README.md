@@ -1,6 +1,12 @@
 # Habit-Tracker
 
 # Habit-Tracker
+
+USED https://sqlitebrowser.org to View in Database. Process of installing and running the program is down below
+
+sudo apt update
+sudo apt install sqlitebrowser
+sqlitebrowser & 
                                 PART 1
 Created the file called main.py
 in this file we are working with SQLAlchemy.
