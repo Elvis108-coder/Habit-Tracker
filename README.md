@@ -1,7 +1,7 @@
 # Habit-Tracker
 
 # Habit-Tracker
-
+                                PART 1
 Created the file called main.py
 in this file we are working with SQLAlchemy.
 Put SQLAlchemy into the system using the command: pip install sqlalchemy.
@@ -35,7 +35,7 @@ class Habits(Base):
     user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship('User', back_populates= 'habits')
 
-    PART 2
+                         PART 2
 
 Added Utility Functions to help with deleting of data
 
@@ -74,7 +74,7 @@ def add_habit():
     session.commit()
     print(f"Added to the database: {title}: {description}")
 
-Added two menus To add User and Habit
+Added a dictionary and a menu list To add User and Habit
 def main()-> None:
     actions= {
         "1":add_user,
@@ -82,3 +82,47 @@ def main()-> None:
         
     }
 
+while True:
+        print("\nOptions:\n1. Add User\n2. Add Task\n3. Query Users\n4. Query Tasks\n5. Update User\n6. Delete User\n7. Delete Task\n8. Exit")
+        choice = input("Enter an option: ")
+        if choice == "8":
+            print("Goodbye")
+            break
+        action = actions.get(choice)
+        if action:
+            action()
+        else:
+            print("That is not an option!")
+if __name__ == "__main__":
+
+    main()
+
+
+                        PART 3
+
+Created a query_user and query_habit function
+
+def query_users():
+    for user in session.query(User).all():
+        print(f"ID: {user.id}, Name: {user.names}, Email: {user.email}")
+
+#Query Habits
+def query_habits():
+    email=input("Enter email: ")
+    user = get_user_by_email(email)
+    if not user:
+        print("User does not exist, wrong email!")
+        return
+    for habits in user.habits:
+        print(f"Habit ID: {habits.id}, Title: {habits.title}")
+
+Added query_user and query_habits in dictionary. query_user is used to find a user and query_habits is used to find a habit.
+
+def main()-> None:
+    actions= {
+        "1":add_user,
+        "2":add_habit,
+        "3":query_users,
+        "4":query_habits
+        
+    }

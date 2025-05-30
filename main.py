@@ -63,15 +63,33 @@ def add_habit():
     print(f"Added to the database: {title}: {description}")
 
 
+#Query User
+def query_users():
+    for user in session.query(User).all():
+        print(f"ID: {user.id}, Name: {user.names}, Email: {user.email}")
+
+#Query Habits
+def query_habits():
+    email=input("Enter email: ")
+    user = get_user_by_email(email)
+    if not user:
+        print("User does not exist, wrong email!")
+        return
+    for habits in user.habits:
+        print(f"Habit ID: {habits.id}, Title: {habits.title}")
+
+
 # Main Operation
 def main()-> None:
     actions= {
         "1":add_user,
-        "2":add_habit
+        "2":add_habit,
+        "3":query_users,
+        "4":query_habits
         
     }
 
-while True:
+    while True:
         print("\nOptions:\n1. Add User\n2. Add Task\n3. Query Users\n4. Query Tasks\n5. Update User\n6. Delete User\n7. Delete Task\n8. Exit")
         choice = input("Enter an option: ")
         if choice == "8":
