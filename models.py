@@ -9,7 +9,7 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     username = Column(String(50), unique=True, nullable=False)  # unique username
     password = Column(String(128), nullable=False)              # hashed password
-    habits = relationship("Habit", back_populates="user")       # one-to-many relationship to Habit
+    habits = relationship("Habit", back_populates="user", cascade="all, delete-orphan")       # one-to-many relationship to Habit
 
 class Habit(Base):
     __tablename__ = 'habits'
@@ -20,7 +20,8 @@ class Habit(Base):
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)  # link to User
     
     user = relationship("User", back_populates="habits")         # back reference to User
-    check_ins = relationship("CheckIn", back_populates="habit")
+    check_ins = relationship("CheckIn", back_populates="habit", cascade="all, delete-orphan")
+
 
 class CheckIn(Base):
     __tablename__ = 'check_ins'
