@@ -101,7 +101,7 @@ habit-tracker/
 │   └── test_models.py
 ├── README.md
 └── requirements.txt   # Project dependencies
-Relationships
+# Relationships
 Defined in models.py using SQLAlchemy:
 
 User → Habit (One-to-Many): A user can have many habits.
@@ -130,5 +130,10 @@ Data visualization (e.g., check-in streaks)
 Export/import user data
 
 Monthly reporting
+# Authors
+<Allan>
+<Elvis>
+<Warioba>
+
 
 
