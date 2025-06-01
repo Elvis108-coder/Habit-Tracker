@@ -8,6 +8,7 @@ class User(Base):
     
     id = Column(Integer, primary_key=True)
     username = Column(String(50), unique=True, nullable=False)  # unique username
+    email = Column(String(40), unique = True, nullable = False) # email
     password = Column(String(128), nullable=False)              # hashed password
     habits = relationship("Habit", back_populates="user")       # one-to-many relationship to Habit
 
