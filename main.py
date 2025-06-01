@@ -14,6 +14,13 @@ def display_menu():
     print("5. Exit")
     print("="*40)
 
+def safe_input(prompt):
+    try:
+        return input(prompt)
+    except EOFError:
+        print("\nNo input detected, exiting.")
+        exit(0)
+
 def main():
     tracker = HabitTracker()
     reminders = ReminderSystem(tracker)
@@ -21,18 +28,18 @@ def main():
 
     while True:
         display_menu()
-        choice = input("Choose an option (1-5): ")
+        choice = safe_input("Choose an option (1-5): ")
 
         if choice == "1":
             # Add New Habit
             print("\n" + "-"*40)
             print("ADD NEW HABIT")
-            name = input("Habit name (e.g., 'Read'): ")
-            frequency = input("Frequency (daily/weekly/monthly): ").lower()
-            reminder = input("Reminder time (HH:MM) or leave blank: ")
+            name = safe_input("Habit name (e.g., 'Read'): ")
+            frequency = safe_input("Frequency (daily/weekly/monthly): ").lower()
+            reminder = safe_input("Reminder time (HH:MM) or leave blank: ")
             tracker.add_habit(name, frequency, reminder if reminder else None)
             print(f"\n✅ '{name}' added successfully!")
-            input("Press Enter to continue...")
+            safe_input("Press Enter to continue...")
 
         elif choice == "2":
             # Mark Habit Complete
@@ -42,14 +49,14 @@ def main():
                 print(f"{i}. {name}")
             
             try:
-                habit_num = int(input("\nEnter habit number to mark complete: ")) - 1
+                habit_num = int(safe_input("\nEnter habit number to mark complete: ")) - 1
                 habit_name = list(tracker.habits.keys())[habit_num]
                 tracker.habits[habit_name].completions.append(datetime.now().isoformat())
                 tracker.save()
                 print(f"\n✅ '{habit_name}' marked complete for today!")
             except (ValueError, IndexError):
                 print("\n❌ Invalid selection")
-            input("Press Enter to continue...")
+            safe_input("Press Enter to continue...")
 
         elif choice == "3":
             # View Reminders
@@ -72,7 +79,7 @@ def main():
             else:
                 print("\nNo missed habits detected.")
             
-            input("\nPress Enter to continue...")
+            safe_input("\nPress Enter to continue...")
 
         elif choice == "4":
             # Show Analytics
@@ -82,12 +89,12 @@ def main():
                 print(f"{i}. {name}")
             
             try:
-                habit_num = int(input("\nEnter habit number to analyze: ")) - 1
+                habit_num = int(safe_input("\nEnter habit number to analyze: ")) - 1
                 habit_name = list(tracker.habits.keys())[habit_num]
                 print(analytics.generate_summary(habit_name))
             except (ValueError, IndexError):
                 print("\n❌ Invalid selection")
-            input("Press Enter to continue...")
+            safe_input("Press Enter to continue...")
 
         elif choice == "5":
             print("\nGoodbye! Keep building those habits 💪")
