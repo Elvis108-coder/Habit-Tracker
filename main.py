@@ -294,7 +294,7 @@ def main():
 
     while True:
         print("\nOptions:")
-        print("1. Add User\n2. Add Goal\n3. Query Users\n4. Query Tasks\n5. Update User\n6. Update Goal\n7. Delete User\n8. Delete Task\n9. Exit")
+        print("1. Add User\n2. Add Goal\n3. Query Users\n4. Query Goals\n5. Update User\n6. Update Goal\n7. Delete User\n8. Delete Task\n9. Exit")
         choice = input("Enter an option: ").strip()
         if choice == "9":
             print("Goodbye")
