@@ -1,10 +1,15 @@
+from models import Habit
 from datetime import datetime, timedelta
 from analytics.tracker import HabitTracker
 from analytics.reminders import ReminderSystem
 from analytics.stats import HabitStats
 
 from auth import register, login
-from database import get_session
+from database import get_session, init_db
+import os
+
+# Initialize the database and create tables if they don't exist
+init_db()
 
 def display_auth_menu():
     print("\n" + "="*40)
@@ -51,7 +56,9 @@ def main():
             print("Invalid choice. Please enter 1-3.")
 
     # User is logged in, now create tracker scoped to this user
-    tracker = HabitTracker(user)
+    data_path = f"data/habits_{user.username}.json"
+    os.makedirs(os.path.dirname(data_path), exist_ok=True)
+    tracker = HabitTracker(data_path, user.id)  # ✅ PASS USER ID HERE
     reminders = ReminderSystem(tracker)
 
     while True:
@@ -64,18 +71,32 @@ def main():
             name = input("Habit name (e.g., 'Read'): ").strip()
             frequency = input("Frequency (daily/weekly/monthly): ").lower().strip()
             reminder = input("Reminder time (HH:MM) or leave blank: ").strip()
+
+            # 1. Add to tracker JSON
             tracker.add_habit(name, frequency, reminder if reminder else None)
-            print(f"\n✅ '{name}' added successfully!")
+            
+            # 2. Add to the database
+            session = get_session()
+            existing = session.query(Habit).filter_by(user_id=user.id, name=name).first()
+            if not existing:
+                db_habit = Habit(name=name, frequency=frequency, user_id=user.id)
+                session.add(db_habit)
+                session.commit()
+                print(f"\n✅ '{name}' added successfully to the database and tracker!")
+            else:
+                print(f"\n⚠️ Habit '{name}' already exists in the database.")
+
             input("Press Enter to continue...")
 
         elif choice == "2":
             print("\n" + "-"*40)
             print("YOUR HABITS:")
-            for i, habit in enumerate(tracker.habits, 1):
+            habit_list = list(tracker.habits.values())
+            for i, habit in enumerate(habit_list, 1):
                 print(f"{i}. {habit.name}")
             try:
                 habit_num = int(input("\nEnter habit number to mark complete: ")) - 1
-                habit = tracker.habits[habit_num]
+                habit = habit_list[habit_num]
                 habit.add_completion()
                 tracker.save()
                 print(f"\n✅ '{habit.name}' marked complete for today!")
@@ -106,23 +127,34 @@ def main():
         elif choice == "4":
             print("\n" + "-"*40)
             print("PROGRESS ANALYTICS")
-            for i, habit in enumerate(tracker.habits, 1):
-                print(f"{i}. {habit.name}")
-            try:
-                habit_num = int(input("\nEnter habit number to analyze: ")) - 1
-                habit = tracker.habits[habit_num]
-                analytics = HabitStats(tracker.habits)
-                print(analytics.summarize_habit(habit.name))
-            except (ValueError, IndexError):
-                print("\n❌ Invalid selection")
-            input("Press Enter to continue...")
 
-        elif choice == "5":
-            print("\nLogging out...")
-            break
+            analytics = HabitStats(user.id)
 
-        else:
-            print("\n❌ Invalid choice. Please enter 1-5.")
+            # 🐞 DEBUG: Show all habits in the DB for verification
+            all_habits = analytics.session.query(Habit).all()
+            print(f"\n🐞 Debug: Total habits in DB = {len(all_habits)}")
+            for h in all_habits:
+                print(f"    - Habit: {h.name} | User ID: {h.user_id}")
+
+            # Fetch only the user's habits
+            habit_list = analytics.session.query(Habit).filter_by(user_id=user.id).all()
+
+            if not habit_list:
+                print("\n❌ You have no habits in the database.")
+            else:
+                print("\nSelect a habit to analyze:")
+                for i, habit in enumerate(habit_list, 1):
+                    print(f"{i}. {habit.name}")
+
+                try:
+                    habit_num = int(input("\nEnter habit number to analyze: ")) - 1
+                    habit = habit_list[habit_num]
+                    print(analytics.summarize_habit(habit))
+                except (ValueError, IndexError):
+                    print("\n❌ Invalid selection.")
+
+            analytics.close()
+            input("\nPress Enter to continue...")
 
 if __name__ == "__main__":
     main()
